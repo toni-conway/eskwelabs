@@ -9,3 +9,4 @@ openai==0.28
 nltk
 spacy
 contractions
+WordCloud
