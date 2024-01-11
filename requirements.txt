@@ -3,4 +3,5 @@ numpy
 matplotlib
 seaborn
 joblib
+scikit-llm
 openai==0.28
