@@ -2,4 +2,5 @@ pandas
 numpy
 matplotlib
 seaborn
+joblib
 openai==0.28
