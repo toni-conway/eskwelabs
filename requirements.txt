@@ -6,3 +6,6 @@ joblib
 scikit-llm
 imbalanced-learn
 openai==0.28
+nltk
+spacy
+contractions
