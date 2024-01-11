@@ -8,5 +8,6 @@ imbalanced-learn
 openai==0.28
 nltk
 spacy
+en-core-web-sm
 contractions
 WordCloud
