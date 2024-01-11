@@ -4,4 +4,5 @@ matplotlib
 seaborn
 joblib
 scikit-llm
+imbalanced-learn
 openai==0.28
