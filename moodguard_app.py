@@ -28,3 +28,22 @@ from wordcloud import WordCloud
 
 
 #--------------------------------------------------------------------------------------------------
+
+#######################################################
+# MAIN Program
+#######################################################
+st.sidebar.header('User Input Features')
+
+st.sidebar.markdown("""
+[Example CSV input file](https://drive.google.com/file/d/18honVLHoQZ5iFU_zz6P51ASyC8ajvByL/view?usp=drive_link)
+""")
+
+
+# Collects user input features into dataframe
+uploaded_file = st.sidebar.file_uploader("Upload your input CSV file", type=["csv"])
+if uploaded_file is not None:
+    input_df = pd.read_csv(uploaded_file)
+    #st.sidebar.button("Start Analyzing Data", on_click=analyze_data(input_df))
+
+
+#--------------------------------------------------------------------------------------------------
