@@ -10,7 +10,7 @@ import openai
 import joblib
 
 from skllm.config import SKLLMConfig
-from skllm.preprocessing import GPTSummarizer
+from skllm.models.gpt.text2text.summarization import GPTSummarizer
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.ensemble import RandomForestClassifier
@@ -164,7 +164,7 @@ def plot_wordcloud(joined_tokens):
 #######################################################
 @st.cache_data
 def summarize_corpus(data):
-    GPTSum = GPTSummarizer(openai_model='gpt-3.5-turbo', max_words=50)
+    GPTSum = GPTSummarizer(model='gpt-3.5-turbo', max_words=50)
 
     # Generate summary for the concatenated sample of positive reviews.
     summary = GPTSum.fit_transform([' '.join(data)])[0]
