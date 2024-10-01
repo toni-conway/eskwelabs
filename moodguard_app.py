@@ -19,6 +19,7 @@ from imblearn.pipeline import Pipeline
 import nltk
 from nltk.corpus import stopwords
 #import spacy
+import en_core_web_sm
 import contractions
 import string
 
