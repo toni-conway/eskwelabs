@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 import time
-import openai
+from openai import OpenAI
 import joblib
 
 from skllm.config import SKLLMConfig
@@ -51,8 +51,8 @@ if "openai_model" not in st.session_state:
     st.session_state.openai_model = "gpt-3.5-turbo"
 
     # Set OpenAI Keys
-    openai.api_key = st.secrets["OPENAI-API-KEY"]
-    SKLLMConfig.set_openai_key(openai.api_key)
+    st.session_state.client = OpenAI(api_key=st.secrets["OPENAI-API-KEY"])
+    SKLLMConfig.set_openai_key(st.secrets["OPENAI-API-KEY"])
 
 # Chat history
 if "messages" not in st.session_state:
@@ -164,10 +164,14 @@ def plot_wordcloud(joined_tokens):
 #######################################################
 @st.cache_data
 def summarize_corpus(data):
-    GPTSum = GPTSummarizer(model='gpt-3.5-turbo', max_words=50)
+    try:
+        GPTSum = GPTSummarizer(model='gpt-3.5-turbo', max_words=50)
 
-    # Generate summary for the concatenated sample of positive reviews.
-    summary = GPTSum.fit_transform([' '.join(data)])[0]
+        # Generate summary for the concatenated sample of positive reviews.
+        summary = GPTSum.fit_transform([' '.join(data)])[0]
+    except:
+        summary = "Summary is unavailable."
+
     return summary
 
 
@@ -178,23 +182,28 @@ def summarize_corpus(data):
 @st.cache_data
 def generate_response(prompt):
 
-    completion = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
-        messages=[
-            {
-                "role": "system",
-                "content": st.session_state.GPT_instuction
-            },
-            {
-                "role": "user",
-                "content": 'Provide Top 3 recommendations to the patient based on the following text: ' + prompt
-            }       
-        ],
-        max_tokens=256,
-        temperature=0.6
-    )
+    try:
+        client = st.session_state.client
+        completion = client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {
+                    "role": "system",
+                    "content": st.session_state.GPT_instuction
+                },
+                {
+                    "role": "user",
+                    "content": 'Provide Top 3 recommendations to the patient based on the following text: ' + prompt
+                }       
+            ],
+            max_tokens=256,
+            temperature=0.6
+        )
 
-    response = completion.choices[0].message.content.strip()
+        response = completion.choices[0].message.content.strip()
+    except:
+        response = "Recommendation is unavailable."
+
     return response
 
 
@@ -258,11 +267,7 @@ def analyze_data(data):
         st.write("---")
 
         # Recommendations
-        try:
-            recommendations = generate_response(summary)
-        except:
-            recommendations = "Recommendation is unavailable."
-        
+        recommendations = generate_response(summary)
         st.markdown("#### Recommendations")
         st.markdown(recommendations)
     
