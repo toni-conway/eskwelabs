@@ -18,7 +18,6 @@ from imblearn.pipeline import Pipeline
 
 import nltk
 from nltk.corpus import stopwords
-import spacy
 import contractions
 import string
 
@@ -36,6 +35,7 @@ st.write("Instructions: Upload the input file through the sidebar and then selec
 
 # First Initialization
 if "nlp" not in st.session_state:
+    import spacy
     st.session_state.nlp = spacy.load('en_core_web_sm', disable=["parser", "ner"])
 
     nltk.download('punkt')     # Downloads the Punkt tokenizer models
