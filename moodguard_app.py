@@ -24,7 +24,42 @@ import string
 
 from wordcloud import WordCloud
 
+st.image('s4g4-waits-moodguard-banner.png')
+st.write("MoodGuard is not a replacement for professional mental health guidance; rather, it is an exploration of how LLMs can contribute to mental health services. Seeking assistance from professionals is highly recommended")
+st.write("Instructions: Upload the input file through the sidebar and then select the \"Start Analyze Data\" button.")
 
+#--------------------------------------------------------------------------------------------------
+
+#######################################################
+# Initialize session state
+#######################################################
+
+# First Initialization
+if "nlp" not in st.session_state:
+    st.session_state.nlp = spacy.load('en_core_web_sm', disable=["parser", "ner"])
+
+    nltk.download('punkt')     # Downloads the Punkt tokenizer models
+    nltk.download('stopwords') # Downloads the list of stopwords
+    nltk.download('wordnet')   # Downloads the WordNet lemmatizer data
+    nltk.download('averaged_perceptron_tagger')
+
+# Open AI Model
+if "openai_model" not in st.session_state:
+    st.session_state.openai_model = "gpt-3.5-turbo"
+
+    # Set OpenAI Keys
+    openai.api_key = st.secrets["OPENAI-API-KEY"]
+    SKLLMConfig.set_openai_key(openai.api_key)
+
+# Chat history
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+    st.session_state.GPT_instuction = """
+        You are warmth and approachable mental health expert and therapist, your expertise is in helping people in thier teens overcome obstacle
+        regarding motivation, career, school, relationships and self esteem and you have done this for a few decades. Your task is to provide the best advice for
+        helping improve mental health. Answer in concise and bullet form. Format your response for markdown processor
+        """
+        
 
 
 #--------------------------------------------------------------------------------------------------
